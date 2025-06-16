@@ -33,6 +33,15 @@ class Achievement(SQLModel, table=True):
     awarded_at: datetime = Field(default_factory=datetime.utcnow)
 
 
+class Reward(SQLModel, table=True):
+    """Items that users can redeem with their points."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    description: str
+    cost: int
+
+
 # create tables
 SQLModel.metadata.create_all(engine)
 
@@ -241,9 +250,9 @@ def award_achievement(user_id: int, name: str, description: str) -> Achievement:
         session.add(achievement)
         user = session.get(User, user_id)
         if user:
-            badges = {b for b in user.badges.split(',') if b}
+            badges = {b for b in user.badges.split(",") if b}
             badges.add(name)
-            user.badges = ','.join(badges)
+            user.badges = ",".join(badges)
             session.add(user)
         session.commit()
         session.refresh(achievement)
@@ -255,3 +264,33 @@ def get_user_achievements(user_id: int) -> List[Achievement]:
     with get_session() as session:
         statement = select(Achievement).where(Achievement.user_id == user_id)
         return session.exec(statement).all()
+
+
+def add_reward(name: str, description: str, cost: int) -> Reward:
+    """Create a new reward available in the store."""
+    reward = Reward(name=name, description=description, cost=cost)
+    with get_session() as session:
+        session.add(reward)
+        session.commit()
+        session.refresh(reward)
+        return reward
+
+
+def get_rewards() -> List[Reward]:
+    """Return all available rewards."""
+    with get_session() as session:
+        statement = select(Reward)
+        return session.exec(statement).all()
+
+
+def redeem_reward(user_id: int, reward_id: int) -> bool:
+    """Deduct points from user and redeem the selected reward."""
+    with get_session() as session:
+        user = session.get(User, user_id)
+        reward = session.get(Reward, reward_id)
+        if not user or not reward or user.points < reward.cost:
+            return False
+        user.points -= reward.cost
+        session.add(user)
+        session.commit()
+        return True

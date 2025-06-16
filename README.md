@@ -21,9 +21,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 7. Misiones personalizadas creadas por administradores desde el bot
 8. Sistema de ranking de usuarios con comando /ranking
 9. Sistema de logros y medallas para usuarios
+10. Tienda para canjear puntos por recompensas
 
 ##  Tarea
-Implementar tienda para canjear puntos por recompensas
+Agregar retos semanales para usuarios
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
