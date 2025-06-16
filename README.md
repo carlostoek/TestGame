@@ -27,10 +27,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 13. Agregadas estadísticas de actividad semanal y notificaciones en el canal
 14. Recompensa automática a los usuarios más activos cada semana
 15. Comando /addreward para que administradores agreguen recompensas a la tienda
+16. Notificación en el canal cuando un usuario compra una recompensa
 
 ##  Tarea
-Notificar en el canal configurado cada vez que un usuario compre una recompensa.
-(en caso de que ya esté hecha esta tarea, realiza el siguiente paso lógico.
+Registrar en la base de datos cada compra realizada por los usuarios y permitir consultarla.
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
