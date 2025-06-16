@@ -27,6 +27,9 @@ from .database import (
     redeem_reward,
     add_reward,
     get_weekly_mission,
+    record_user_message,
+    get_weekly_activity,
+    get_user_weekly_stat,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -199,6 +202,20 @@ async def achievements_command(message: Message):
     await message.answer("Tus logros:\n" + "\n".join(lines))
 
 
+@dp.message(Command("weeklystats"))
+async def weekly_stats_command(message: Message):
+    """Show weekly activity statistics."""
+    user_id = message.from_user.id
+    stat = get_user_weekly_stat(user_id)
+    count = stat.message_count if stat else 0
+    top = get_weekly_activity(5)
+    lines = [f"{idx+1}. {s.user_id} - {s.message_count}" for idx, s in enumerate(top)]
+    text = f"Mensajes esta semana: {count}"
+    if lines:
+        text += "\nTop actividad:\n" + "\n".join(lines)
+    await message.answer(text)
+
+
 @dp.message(Command("store"))
 async def store_command(message: Message):
     """List available rewards."""
@@ -223,6 +240,13 @@ async def buy_command(message: Message):
         await message.answer("Recompensa canjeada con \u00e9xito")
     else:
         await message.answer("No tienes suficientes puntos o recompensa inv\u00e1lida")
+
+
+@dp.message(~Command())
+async def track_messages(message: Message):
+    """Track user activity on every message."""
+    if message.from_user and message.chat.type in {"private", "group", "supergroup"}:
+        record_user_message(message.from_user.id)
 
 
 async def scheduler():
@@ -269,10 +293,26 @@ async def weekly_mission_scheduler():
         await asyncio.sleep(3600)
 
 
+async def weekly_summary_scheduler():
+    """Send weekly activity summary to the configured channel."""
+    last_week = datetime.utcnow().date() - timedelta(days=datetime.utcnow().weekday())
+    while True:
+        current_week = datetime.utcnow().date() - timedelta(days=datetime.utcnow().weekday())
+        if current_week != last_week:
+            if settings.notify_channel_id:
+                stats = get_weekly_activity(5, week=last_week)
+                lines = [f"{idx+1}. {s.user_id} - {s.message_count}" for idx, s in enumerate(stats)]
+                text = "Resumen de actividad semanal:\n" + ("\n".join(lines) if lines else "Sin actividad")
+                await bot.send_message(settings.notify_channel_id, text)
+            last_week = current_week
+        await asyncio.sleep(3600)
+
+
 async def main():
     asyncio.create_task(scheduler())
     asyncio.create_task(daily_mission_scheduler())
     asyncio.create_task(weekly_mission_scheduler())
+    asyncio.create_task(weekly_summary_scheduler())
     await dp.start_polling(bot)
 
 

@@ -24,6 +24,7 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 10. Tienda para canjear puntos por recompensas
 11. Retos semanales automáticos para usuarios
 12. Comando /weekly para consultar el reto semanal asignado
+13. Agregadas estadísticas de actividad semanal y notificaciones en el canal
 
 ##  Tarea
 Agregar estadísticas de actividad semanal y notificaciones en el canal

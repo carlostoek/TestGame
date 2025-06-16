@@ -42,6 +42,15 @@ class Reward(SQLModel, table=True):
     cost: int
 
 
+class WeeklyActivity(SQLModel, table=True):
+    """Tracks number of messages sent by a user each week."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+    week_start: datetime
+    message_count: int = 0
+
+
 # create tables
 SQLModel.metadata.create_all(engine)
 
@@ -344,3 +353,47 @@ def redeem_reward(user_id: int, reward_id: int) -> bool:
         session.add(user)
         session.commit()
         return True
+
+
+def _week_start(date: datetime.date) -> datetime:
+    monday = date - timedelta(days=date.weekday())
+    return datetime.combine(monday, datetime.min.time())
+
+
+def record_user_message(user_id: int) -> None:
+    """Increase weekly message count for a user."""
+    start = _week_start(datetime.utcnow().date())
+    with get_session() as session:
+        statement = select(WeeklyActivity).where(
+            WeeklyActivity.user_id == user_id,
+            WeeklyActivity.week_start == start,
+        )
+        stat = session.exec(statement).first()
+        if not stat:
+            stat = WeeklyActivity(user_id=user_id, week_start=start)
+        stat.message_count += 1
+        session.add(stat)
+        session.commit()
+
+
+def get_weekly_activity(limit: int = 5, week: datetime.date | None = None) -> List[WeeklyActivity]:
+    """Return top weekly activity for the given week."""
+    week_start = _week_start(week or datetime.utcnow().date())
+    with get_session() as session:
+        statement = (
+            select(WeeklyActivity)
+            .where(WeeklyActivity.week_start == week_start)
+            .order_by(WeeklyActivity.message_count.desc())
+            .limit(limit)
+        )
+        return session.exec(statement).all()
+
+
+def get_user_weekly_stat(user_id: int) -> Optional[WeeklyActivity]:
+    start = _week_start(datetime.utcnow().date())
+    with get_session() as session:
+        statement = select(WeeklyActivity).where(
+            WeeklyActivity.user_id == user_id,
+            WeeklyActivity.week_start == start,
+        )
+        return session.exec(statement).first()
