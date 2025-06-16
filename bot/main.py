@@ -228,6 +228,23 @@ async def store_command(message: Message):
     await message.answer("Tienda:\n" + "\n".join(lines))
 
 
+@dp.message(Command("addreward"))
+async def add_reward_command(message: Message):
+    """Add a new reward to the store (admin only)."""
+    if message.from_user.id not in settings.admin_ids:
+        await message.answer("No autorizado")
+        return
+    try:
+        data = message.text.split(maxsplit=1)[1]
+        name, desc, cost_str = [part.strip() for part in data.split("|", 2)]
+        cost = int(cost_str)
+    except Exception:
+        await message.answer("Uso: /addreward nombre|descripcion|costo")
+        return
+    add_reward(name, desc, cost)
+    await message.answer("Recompensa agregada")
+
+
 @dp.message(Command("buy"))
 async def buy_command(message: Message):
     """Redeem a reward using points."""
