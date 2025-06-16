@@ -30,9 +30,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 16. Notificación en el canal cuando un usuario compra una recompensa
 17. Registro de compras en la base de datos y comando /purchases para consultarlas
 18. Consulta de compras de cualquier usuario con /purchases <id> para administradores
+19. Resumen mensual de compras disponible para administradores
 
 ##  Tarea
-Agregar resumen mensual de compras para los administradores.
+Exportar historial de compras a CSV para análisis.
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso

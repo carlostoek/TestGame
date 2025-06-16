@@ -438,6 +438,32 @@ def reward_top_weekly_users(
                 user.points += points
                 user.level = user.points // 100 + 1
                 session.add(user)
-                rewarded.append(user)
-        session.commit()
-        return rewarded
+        rewarded.append(user)
+    session.commit()
+    return rewarded
+
+
+def get_monthly_purchase_summary(month: date) -> list[tuple[Reward | None, int]]:
+    """Return count of purchases per reward for the given month."""
+    start = datetime(month.year, month.month, 1)
+    if month.month == 12:
+        next_month = datetime(month.year + 1, 1, 1)
+    else:
+        next_month = datetime(month.year, month.month + 1, 1)
+
+    with get_session() as session:
+        statement = select(Purchase).where(
+            Purchase.purchased_at >= start,
+            Purchase.purchased_at < next_month,
+        )
+        purchases = session.exec(statement).all()
+        counts: dict[int, int] = {}
+        for p in purchases:
+            counts[p.reward_id] = counts.get(p.reward_id, 0) + 1
+
+        rewards = {}
+        if counts:
+            statement = select(Reward).where(Reward.id.in_(list(counts.keys())))
+            rewards = {r.id: r for r in session.exec(statement).all()}
+
+        return [(rewards.get(rid), count) for rid, count in counts.items()]
