@@ -28,6 +28,7 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 
 ##  Tarea
 Agregar estadísticas de actividad semanal y notificaciones en el canal.
+(en caso de que ya esté hecha está tarea, realiza el siguente paso lógico.
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
