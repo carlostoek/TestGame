@@ -13,6 +13,7 @@ class Settings:
             int(x) for x in os.getenv("ADMIN_IDS", "").split(",") if x
         ]
     )
+    notify_channel_id: int = int(os.getenv("NOTIFY_CHANNEL_ID", "0"))
 
 
 settings = Settings()
