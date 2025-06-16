@@ -1,4 +1,12 @@
 import asyncio
+from pathlib import Path
+import sys
+
+# Ensure project root is on sys.path when running the file directly
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import Message
