@@ -42,6 +42,15 @@ class Reward(SQLModel, table=True):
     cost: int
 
 
+class Purchase(SQLModel, table=True):
+    """Log of rewards purchased by users."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+    reward_id: int = Field(foreign_key="reward.id")
+    purchased_at: datetime = Field(default_factory=datetime.utcnow)
+
+
 class WeeklyActivity(SQLModel, table=True):
     """Tracks number of messages sent by a user each week."""
 
@@ -350,10 +359,19 @@ def redeem_reward(user_id: int, reward_id: int) -> Reward | None:
         if not user or not reward or user.points < reward.cost:
             return None
         user.points -= reward.cost
+        purchase = Purchase(user_id=user_id, reward_id=reward_id)
         session.add(user)
+        session.add(purchase)
         session.commit()
         session.refresh(reward)
         return reward
+
+
+def get_user_purchases(user_id: int) -> List[Purchase]:
+    """Return purchases made by the given user."""
+    with get_session() as session:
+        statement = select(Purchase).where(Purchase.user_id == user_id)
+        return session.exec(statement).all()
 
 
 def _week_start(date: date) -> datetime:

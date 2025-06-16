@@ -26,6 +26,7 @@ from bot.database import (
     get_user_achievements,
     get_rewards,
     redeem_reward,
+    get_user_purchases,
     add_reward,
     get_weekly_mission,
     record_user_message,
@@ -264,6 +265,21 @@ async def buy_command(message: Message):
             )
     else:
         await message.answer("No tienes suficientes puntos o recompensa inv\u00e1lida")
+
+
+@dp.message(Command("purchases"))
+async def purchases_command(message: Message):
+    """Show purchases made by the user."""
+    purchases = get_user_purchases(message.from_user.id)
+    if not purchases:
+        await message.answer("A\u00fan no has comprado nada")
+        return
+    rewards = {r.id: r for r in get_rewards()}
+    lines = [
+        f"{idx+1}. {rewards.get(p.reward_id).name if p.reward_id in rewards else p.reward_id} - {p.purchased_at:%Y-%m-%d}"
+        for idx, p in enumerate(purchases)
+    ]
+    await message.answer("Tus compras:\n" + "\n".join(lines))
 
 
 @dp.message(~Command())
