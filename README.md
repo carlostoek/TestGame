@@ -26,9 +26,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 12. Comando /weekly para consultar el reto semanal asignado
 13. Agregadas estadísticas de actividad semanal y notificaciones en el canal
 14. Recompensa automática a los usuarios más activos cada semana
+15. Comando /addreward para que administradores agreguen recompensas a la tienda
 
 ##  Tarea
-Implementar recompensas automáticas para los usuarios con mayor actividad semanal.
+Notificar en el canal configurado cada vez que un usuario compre una recompensa.
 (en caso de que ya esté hecha esta tarea, realiza el siguiente paso lógico.
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
