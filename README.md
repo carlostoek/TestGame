@@ -18,10 +18,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 4. Añadido soporte para misiones con objetivos y recompensas dinámicas
 5. Sistema de notificaciones de expiración y nuevas reglas de recompensas
 6. Misiones diarias asignadas automáticamente a todos los usuarios
+7. Misiones personalizadas creadas por administradores desde el bot
 
 ##  Tarea
-Implementar misiones diarias que se asignen automáticamente a todos los usuarios
-(Definir la lógica para generarlas y guardarlas en la base de datos)
+Permitir a los administradores crear misiones personalizadas desde el bot, definiendo descripción, puntos y duración
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
@@ -34,5 +34,5 @@ Una vez terminaba tu tarea y verificado que funciona y que responde  como deber�
 (en el número siguiente pon una descripción que se ajuste a lo que hiciste)
 
 ## Tarea
-Permitir a los administradores crear misiones personalizadas desde el bot, definiendo descripción, puntos y duración
+Implementar un sistema de ranking de usuarios basado en puntos acumulados
 

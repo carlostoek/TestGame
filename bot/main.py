@@ -114,6 +114,27 @@ async def complete_command(message: Message):
     await message.answer(f"Misi\u00f3n completada! Ganaste {reward} puntos")
 
 
+@dp.message(Command("createmission"))
+async def create_mission(message: Message):
+    """Allow admins to create custom missions for a user."""
+    if message.from_user.id not in settings.admin_ids:
+        await message.answer("No autorizado")
+        return
+    try:
+        data = message.text.split(maxsplit=1)[1]
+        user_id_str, desc, points_str, days_str = [
+            part.strip() for part in data.split("|")
+        ]
+        user_id = int(user_id_str)
+        points = int(points_str)
+        days = int(days_str)
+    except Exception:
+        await message.answer("Uso: /createmission user_id|descripcion|puntos|dias")
+        return
+    assign_mission(user_id, desc, points, days_valid=days)
+    await message.answer("Misi\u00f3n creada")
+
+
 async def scheduler():
     """Background task to clean expired missions and warn users."""
     while True:
