@@ -28,9 +28,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 14. Recompensa automática a los usuarios más activos cada semana
 15. Comando /addreward para que administradores agreguen recompensas a la tienda
 16. Notificación en el canal cuando un usuario compra una recompensa
+17. Registro de compras en la base de datos y comando /purchases para consultarlas
 
 ##  Tarea
-Registrar en la base de datos cada compra realizada por los usuarios y permitir consultarla.
+Permitir a los administradores consultar las compras de cualquier usuario.
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
