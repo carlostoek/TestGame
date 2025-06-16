@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field, create_engine, Session, select
 from typing import Optional, List
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 engine = create_engine("sqlite:///database.db")
 
@@ -355,7 +355,7 @@ def redeem_reward(user_id: int, reward_id: int) -> bool:
         return True
 
 
-def _week_start(date: datetime.date) -> datetime:
+def _week_start(date: date) -> datetime:
     monday = date - timedelta(days=date.weekday())
     return datetime.combine(monday, datetime.min.time())
 
@@ -376,7 +376,7 @@ def record_user_message(user_id: int) -> None:
         session.commit()
 
 
-def get_weekly_activity(limit: int = 5, week: datetime.date | None = None) -> List[WeeklyActivity]:
+def get_weekly_activity(limit: int = 5, week: date | None = None) -> List[WeeklyActivity]:
     """Return top weekly activity for the given week."""
     week_start = _week_start(week or datetime.utcnow().date())
     with get_session() as session:
