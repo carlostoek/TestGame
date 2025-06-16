@@ -17,6 +17,7 @@ from .database import (
     remove_expired_missions,
     get_missions_near_expiry,
     mark_warning_sent,
+    assign_daily_missions,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -127,8 +128,24 @@ async def scheduler():
         await asyncio.sleep(3600)
 
 
+async def daily_mission_scheduler():
+    """Assign daily missions to all users once per day."""
+    last_day = datetime.utcnow().date()
+    while True:
+        current_day = datetime.utcnow().date()
+        if current_day != last_day:
+            assign_daily_missions(
+                "Misi\u00f3n diaria: env\u00eda 3 mensajes",
+                points=5,
+                goal=3,
+            )
+            last_day = current_day
+        await asyncio.sleep(3600)
+
+
 async def main():
     asyncio.create_task(scheduler())
+    asyncio.create_task(daily_mission_scheduler())
     await dp.start_polling(bot)
 
 
