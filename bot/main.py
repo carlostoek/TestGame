@@ -6,8 +6,9 @@ from aiogram.types import Message
 from typing import Optional
 from datetime import datetime, timedelta
 
-from .config import settings
-from .database import (
+# Use absolute imports so the module can run as a script
+from bot.config import settings
+from bot.database import (
     get_or_create_user,
     reset_missions,
     assign_mission,
