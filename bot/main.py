@@ -253,9 +253,14 @@ async def buy_command(message: Message):
     except (IndexError, ValueError):
         await message.answer("Uso: /buy <id_recompensa>")
         return
-    success = redeem_reward(message.from_user.id, reward_id)
-    if success:
+    reward = redeem_reward(message.from_user.id, reward_id)
+    if reward:
         await message.answer("Recompensa canjeada con \u00e9xito")
+        if settings.notify_channel_id:
+            await bot.send_message(
+                settings.notify_channel_id,
+                f"El usuario {message.from_user.id} compr\u00f3 la recompensa {reward.name}",
+            )
     else:
         await message.answer("No tienes suficientes puntos o recompensa inv\u00e1lida")
 

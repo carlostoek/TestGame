@@ -342,17 +342,18 @@ def get_rewards() -> List[Reward]:
         return session.exec(statement).all()
 
 
-def redeem_reward(user_id: int, reward_id: int) -> bool:
+def redeem_reward(user_id: int, reward_id: int) -> Reward | None:
     """Deduct points from user and redeem the selected reward."""
     with get_session() as session:
         user = session.get(User, user_id)
         reward = session.get(Reward, reward_id)
         if not user or not reward or user.points < reward.cost:
-            return False
+            return None
         user.points -= reward.cost
         session.add(user)
         session.commit()
-        return True
+        session.refresh(reward)
+        return reward
 
 
 def _week_start(date: date) -> datetime:
