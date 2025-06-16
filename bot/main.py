@@ -277,17 +277,36 @@ async def buy_command(message: Message):
 
 @dp.message(Command("purchases"))
 async def purchases_command(message: Message):
-    """Show purchases made by the user."""
-    purchases = get_user_purchases(message.from_user.id)
+    """Show purchases made by the user or another user if admin."""
+    parts = message.text.split(maxsplit=1)
+    target_id = message.from_user.id
+    if len(parts) > 1:
+        if message.from_user.id not in settings.admin_ids:
+            await message.answer("No autorizado")
+            return
+        try:
+            target_id = int(parts[1])
+        except ValueError:
+            await message.answer("Uso: /purchases <user_id>")
+            return
+
+    purchases = get_user_purchases(target_id)
     if not purchases:
-        await message.answer("A\u00fan no has comprado nada")
+        text = (
+            "A\u00fan no has comprado nada"
+            if target_id == message.from_user.id
+            else f"El usuario {target_id} no ha comprado nada"
+        )
+        await message.answer(text)
         return
+
     rewards = {r.id: r for r in get_rewards()}
     lines = [
         f"{idx+1}. {rewards.get(p.reward_id).name if p.reward_id in rewards else p.reward_id} - {p.purchased_at:%Y-%m-%d}"
         for idx, p in enumerate(purchases)
     ]
-    await message.answer("Tus compras:\n" + "\n".join(lines))
+    prefix = "Tus" if target_id == message.from_user.id else f"Compras de {target_id}"
+    await message.answer(prefix + " compras:\n" + "\n".join(lines))
 
 
 @dp.message(~F.text.startswith("/"))
