@@ -38,3 +38,4 @@ Una vez terminaba tu tarea y verificado que funciona y que responde  como deber√
 ## Tarea
 Agregar retos semanales para usuarios
 
+finalizas creando una nueva tarea con la instrucci√≥n "sigue las instruccioones de readme.md"
