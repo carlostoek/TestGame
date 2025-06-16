@@ -22,6 +22,7 @@ class Mission(SQLModel, table=True):
     progress: int = 0
     expires_at: Optional[datetime] = None
     warning_sent: bool = False
+    created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 # create tables
@@ -173,3 +174,42 @@ def mark_warning_sent(mission_id: int) -> None:
             mission.warning_sent = True
             session.add(mission)
             session.commit()
+
+
+def get_all_users() -> List[User]:
+    """Return all registered users."""
+    with get_session() as session:
+        statement = select(User)
+        return session.exec(statement).all()
+
+
+def assign_daily_missions(
+    description: str,
+    points: int,
+    goal: int = 1,
+) -> None:
+    """Assign a daily mission to all users if they don't have it for today."""
+    today = datetime.utcnow().date()
+    start = datetime.combine(today, datetime.min.time())
+    end = start + timedelta(days=1)
+    with get_session() as session:
+        users = session.exec(select(User)).all()
+        for user in users:
+            statement = select(Mission).where(
+                Mission.user_id == user.id,
+                Mission.type == "daily",
+                Mission.created_at >= start,
+                Mission.created_at < end,
+            )
+            exists = session.exec(statement).first()
+            if not exists:
+                mission = Mission(
+                    user_id=user.id,
+                    description=description,
+                    points=points,
+                    type="daily",
+                    goal=goal,
+                    expires_at=end,
+                )
+                session.add(mission)
+        session.commit()
