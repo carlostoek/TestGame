@@ -28,8 +28,7 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 14. Recompensa automática a los usuarios más activos cada semana
 
 ##  Tarea
-Implementar recompensas automáticas para los usuarios con mayor actividad semanal.
-(en caso de que ya esté hecha esta tarea, realiza el siguiente paso lógico.
+ describe aquí el siguiente paso lógico para el desarrollo de un sistema como este siguiendo El Progreso que ya lleva
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
