@@ -36,7 +36,7 @@ Una vez terminaba tu tarea y verificado que funciona y que responde  como deber�
 ### Progreso
 (en el número siguiente pon una descripción que se ajuste a lo que hiciste)
 
-## Tarea
-Agregar retos semanales para usuarios
+## Tarea (este es un ejemplo, actualiza arriba, aquí no)
 
+(Agrega una descripción del próximo paso lógico en este tipo de proyectos) 
 finalizas creando una nueva tarea con la instrucción "sigue las instruccioones de readme.md"
