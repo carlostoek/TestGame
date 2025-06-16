@@ -33,9 +33,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 18. Consulta de compras de cualquier usuario con /purchases <id> para administradores
 19. Resumen mensual de compras disponible para administradores
 20. Creada estructura básica de comandos de administración
+21. Comandos de administración reorganizados en un router dedicado
 
 ##  Tarea
-organizar los comandos de administración en el nuevo router
+agregar pruebas unitarias para los comandos de administración
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
