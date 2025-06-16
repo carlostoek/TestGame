@@ -25,10 +25,11 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 11. Retos semanales automáticos para usuarios
 12. Comando /weekly para consultar el reto semanal asignado
 13. Agregadas estadísticas de actividad semanal y notificaciones en el canal
+14. Recompensa automática a los usuarios más activos cada semana
 
 ##  Tarea
-Agregar estadísticas de actividad semanal y notificaciones en el canal.
-(en caso de que ya esté hecha está tarea, realiza el siguente paso lógico.
+Implementar recompensas automáticas para los usuarios con mayor actividad semanal.
+(en caso de que ya esté hecha esta tarea, realiza el siguiente paso lógico.
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
@@ -37,4 +38,4 @@ Estructura:
 (actualiza la estructura del proyecto en caso de que hayas creado archivos)
 Progreso:
 (en el número siguiente pon una descripción que se ajuste a lo que hiciste)
--Tarea: Instrucciones para desarrollar en siguente paso lógico para el desarrollo de un sistema como este 
+-Tarea: Implementar clasificación mensual de usuarios con recompensas automáticas

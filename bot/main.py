@@ -30,6 +30,7 @@ from .database import (
     record_user_message,
     get_weekly_activity,
     get_user_weekly_stat,
+    reward_top_weekly_users,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -304,6 +305,13 @@ async def weekly_summary_scheduler():
                 lines = [f"{idx+1}. {s.user_id} - {s.message_count}" for idx, s in enumerate(stats)]
                 text = "Resumen de actividad semanal:\n" + ("\n".join(lines) if lines else "Sin actividad")
                 await bot.send_message(settings.notify_channel_id, text)
+            bonus = 10
+            rewarded = reward_top_weekly_users(last_week, points=bonus)
+            for user in rewarded:
+                await bot.send_message(
+                    user.id,
+                    f"\u00a1Felicidades! Fuiste de los m\u00e1s activos y ganas {bonus} puntos extra",
+                )
             last_week = current_week
         await asyncio.sleep(3600)
 
