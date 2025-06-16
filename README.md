@@ -10,6 +10,7 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 - bot/config.py carga de variables de entorno.
 - bot/database.py modelos y utilidades de base de datos con SQLModel.
 - bot/main.py punto de entrada del bot.
+- bot/admin/ router y comandos de administración.
 
 ## Progreso
 1. Instalé y generé la estructura básica del bot
@@ -31,9 +32,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 17. Registro de compras en la base de datos y comando /purchases para consultarlas
 18. Consulta de compras de cualquier usuario con /purchases <id> para administradores
 19. Resumen mensual de compras disponible para administradores
+20. Creada estructura básica de comandos de administración
 
 ##  Tarea
-crea la estructura básica de la administración
+organizar los comandos de administración en el nuevo router
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso

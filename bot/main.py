@@ -43,9 +43,11 @@ from bot.database import (
     reward_top_weekly_users,
     get_monthly_purchase_summary,
 )
+from bot.admin import router as admin_router
 
 bot = Bot(token=settings.bot_token)
 dp = Dispatcher()
+dp.include_router(admin_router)
 
 
 @dp.message(Command("start"))
