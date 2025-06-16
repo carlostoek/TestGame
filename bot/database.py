@@ -25,6 +25,14 @@ class Mission(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
+class Achievement(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+    name: str
+    description: str
+    awarded_at: datetime = Field(default_factory=datetime.utcnow)
+
+
 # create tables
 SQLModel.metadata.create_all(engine)
 
@@ -220,3 +228,30 @@ def assign_daily_missions(
                 )
                 session.add(mission)
         session.commit()
+
+
+def award_achievement(user_id: int, name: str, description: str) -> Achievement:
+    """Grant an achievement and update user badges."""
+    achievement = Achievement(
+        user_id=user_id,
+        name=name,
+        description=description,
+    )
+    with get_session() as session:
+        session.add(achievement)
+        user = session.get(User, user_id)
+        if user:
+            badges = {b for b in user.badges.split(',') if b}
+            badges.add(name)
+            user.badges = ','.join(badges)
+            session.add(user)
+        session.commit()
+        session.refresh(achievement)
+        return achievement
+
+
+def get_user_achievements(user_id: int) -> List[Achievement]:
+    """Return all achievements for a user."""
+    with get_session() as session:
+        statement = select(Achievement).where(Achievement.user_id == user_id)
+        return session.exec(statement).all()
