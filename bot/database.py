@@ -397,3 +397,28 @@ def get_user_weekly_stat(user_id: int) -> Optional[WeeklyActivity]:
             WeeklyActivity.week_start == start,
         )
         return session.exec(statement).first()
+
+
+def reward_top_weekly_users(
+    week: date, top_n: int = 3, points: int = 10
+) -> list[User]:
+    """Award extra points to the most active users of the given week."""
+    week_start = _week_start(week)
+    with get_session() as session:
+        statement = (
+            select(WeeklyActivity)
+            .where(WeeklyActivity.week_start == week_start)
+            .order_by(WeeklyActivity.message_count.desc())
+            .limit(top_n)
+        )
+        stats = session.exec(statement).all()
+        rewarded: list[User] = []
+        for stat in stats:
+            user = session.get(User, stat.user_id)
+            if user:
+                user.points += points
+                user.level = user.points // 100 + 1
+                session.add(user)
+                rewarded.append(user)
+        session.commit()
+        return rewarded
