@@ -21,6 +21,7 @@ class Mission(SQLModel, table=True):
     goal: int = 1
     progress: int = 0
     expires_at: Optional[datetime] = None
+    warning_sent: bool = False
 
 
 # create tables
@@ -32,8 +33,11 @@ def get_session():
 
 
 def calculate_reward(mission: Mission) -> int:
-    """Compute dynamic reward based on mission goal."""
-    return mission.points * max(1, mission.goal)
+    """Compute dynamic reward based on mission goal and type."""
+    base = mission.points * max(1, mission.goal)
+    if mission.type == "hard":
+        base *= 2
+    return base
 
 
 def get_or_create_user(user_id: int) -> User:
@@ -146,3 +150,26 @@ def remove_expired_missions() -> None:
         for m in missions:
             session.delete(m)
         session.commit()
+
+
+def get_missions_near_expiry(hours: int = 24) -> List[Mission]:
+    """Return missions that will expire within the given hours and haven't been warned."""
+    threshold = datetime.utcnow() + timedelta(hours=hours)
+    with get_session() as session:
+        statement = select(Mission).where(
+            Mission.expires_at != None,
+            Mission.expires_at <= threshold,
+            Mission.expires_at > datetime.utcnow(),
+            Mission.warning_sent == False,
+        )
+        missions = session.exec(statement).all()
+        return missions
+
+
+def mark_warning_sent(mission_id: int) -> None:
+    with get_session() as session:
+        mission = session.get(Mission, mission_id)
+        if mission:
+            mission.warning_sent = True
+            session.add(mission)
+            session.commit()

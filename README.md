@@ -16,11 +16,11 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 2. Diseño básico de la base de datos
 3. Implementada lógica inicial de misiones y recompensas
 4. Añadido soporte para misiones con objetivos y recompensas dinámicas
+5. Sistema de notificaciones de expiración y nuevas reglas de recompensas
 
 ##  Tarea
-Implementar un sistema de notificaciones para avisar a los usuarios cuando una misión esté por expirar
-
-(Definir nuevas reglas para misiones y cómo se calculan las recompensas)
+Implementar misiones diarias que se asignen automáticamente a todos los usuarios
+(Definir la lógica para generarlas y guardarlas en la base de datos)
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
