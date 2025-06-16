@@ -21,6 +21,9 @@ from .database import (
     get_top_users,
     award_achievement,
     get_user_achievements,
+    get_rewards,
+    redeem_reward,
+    add_reward,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -145,9 +148,7 @@ async def ranking_command(message: Message):
     if not users:
         await message.answer("No hay usuarios registrados")
         return
-    lines = [
-        f"{idx + 1}. {u.id} - {u.points} pts" for idx, u in enumerate(users)
-    ]
+    lines = [f"{idx + 1}. {u.id} - {u.points} pts" for idx, u in enumerate(users)]
     await message.answer("Ranking:\n" + "\n".join(lines))
 
 
@@ -178,6 +179,32 @@ async def achievements_command(message: Message):
         return
     lines = [f"{a.name}: {a.description}" for a in achievements]
     await message.answer("Tus logros:\n" + "\n".join(lines))
+
+
+@dp.message(Command("store"))
+async def store_command(message: Message):
+    """List available rewards."""
+    rewards = get_rewards()
+    if not rewards:
+        await message.answer("La tienda est\u00e1 vac\u00eda")
+        return
+    lines = [f"{r.id}. {r.name} - {r.cost} pts" for r in rewards]
+    await message.answer("Tienda:\n" + "\n".join(lines))
+
+
+@dp.message(Command("buy"))
+async def buy_command(message: Message):
+    """Redeem a reward using points."""
+    try:
+        reward_id = int(message.text.split(maxsplit=1)[1])
+    except (IndexError, ValueError):
+        await message.answer("Uso: /buy <id_recompensa>")
+        return
+    success = redeem_reward(message.from_user.id, reward_id)
+    if success:
+        await message.answer("Recompensa canjeada con \u00e9xito")
+    else:
+        await message.answer("No tienes suficientes puntos o recompensa inv\u00e1lida")
 
 
 async def scheduler():
