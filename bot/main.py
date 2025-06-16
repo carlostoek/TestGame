@@ -15,6 +15,8 @@ from .database import (
     update_mission_progress,
     calculate_reward,
     remove_expired_missions,
+    get_missions_near_expiry,
+    mark_warning_sent,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -112,9 +114,16 @@ async def complete_command(message: Message):
 
 
 async def scheduler():
-    """Background task to clean expired missions."""
+    """Background task to clean expired missions and warn users."""
     while True:
         remove_expired_missions()
+        missions = get_missions_near_expiry(24)
+        for m in missions:
+            await bot.send_message(
+                m.user_id,
+                f"La misi\u00f3n '{m.description}' expirar\u00e1 pronto",
+            )
+            mark_warning_sent(m.id)
         await asyncio.sleep(3600)
 
 
