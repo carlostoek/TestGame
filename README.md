@@ -23,7 +23,7 @@ Implementar un sistema de notificaciones para avisar a los usuarios cuando una m
 (Definir nuevas reglas para misiones y cómo se calculan las recompensas)
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
--Actualizar el nombre de la tarea (en Codex) con algo que describa este paso (en caso de ser necesario)
+-Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
 -Actualiza este documento (README.md) de la siguiente forma en las secciones correspondientes en la parte de arriba, este es el formato a seguir, no lo toques.
 
 ### Estructura
