@@ -273,6 +273,22 @@ def assign_weekly_missions(
         session.commit()
 
 
+def get_weekly_mission(user_id: int) -> Optional[Mission]:
+    """Return the active weekly mission for the given user."""
+    today = datetime.utcnow().date()
+    monday = today - timedelta(days=today.weekday())
+    start = datetime.combine(monday, datetime.min.time())
+    end = start + timedelta(days=7)
+    with get_session() as session:
+        statement = select(Mission).where(
+            Mission.user_id == user_id,
+            Mission.type == "weekly",
+            Mission.created_at >= start,
+            Mission.created_at < end,
+        )
+        return session.exec(statement).first()
+
+
 def award_achievement(user_id: int, name: str, description: str) -> Achievement:
     """Grant an achievement and update user badges."""
     achievement = Achievement(
