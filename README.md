@@ -33,7 +33,7 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 19. Resumen mensual de compras disponible para administradores
 
 ##  Tarea
-Exportar historial de compras a CSV para análisis.
+crea la estructura básica de la administración
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
