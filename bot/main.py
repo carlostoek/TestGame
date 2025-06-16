@@ -41,6 +41,7 @@ from bot.database import (
     get_weekly_activity,
     get_user_weekly_stat,
     reward_top_weekly_users,
+    get_monthly_purchase_summary,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -307,6 +308,37 @@ async def purchases_command(message: Message):
     ]
     prefix = "Tus" if target_id == message.from_user.id else f"Compras de {target_id}"
     await message.answer(prefix + " compras:\n" + "\n".join(lines))
+
+
+@dp.message(Command("monthsummary"))
+async def monthly_purchases_command(message: Message):
+    """Show purchase summary for a given month (admin only)."""
+    if message.from_user.id not in settings.admin_ids:
+        await message.answer("No autorizado")
+        return
+
+    parts = message.text.split(maxsplit=1)
+    if len(parts) > 1:
+        try:
+            month = datetime.strptime(parts[1], "%Y-%m").date().replace(day=1)
+        except ValueError:
+            await message.answer("Uso: /monthsummary [YYYY-MM]")
+            return
+    else:
+        first_day_current = datetime.utcnow().date().replace(day=1)
+        month = (first_day_current - timedelta(days=1)).replace(day=1)
+
+    summary = get_monthly_purchase_summary(month)
+    if not summary:
+        await message.answer("Sin compras registradas")
+        return
+
+    lines = [
+        f"{reward.name if reward else rid}: {count}" for reward, count in summary
+    ]
+    await message.answer(
+        f"Resumen de compras {month:%Y-%m}:\n" + "\n".join(lines)
+    )
 
 
 @dp.message(~F.text.startswith("/"))
