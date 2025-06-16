@@ -27,19 +27,13 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 13. Agregadas estadísticas de actividad semanal y notificaciones en el canal
 
 ##  Tarea
-sigue las instruccioones de readme.md
+Agregar estadísticas de actividad semanal y notificaciones en el canal.
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
--Actualiza este documento (README.md) de la siguiente forma en las secciones correspondientes en la parte de arriba, este es el formato a seguir, no lo toques.
-
-### Estructura
+-Actualiza este documento (README.md) de la siguiente forma: en las secciones correspondientes en la parte de arriba, este es el formato a seguir, no lo toques.
+Estructura:
 (actualiza la estructura del proyecto en caso de que hayas creado archivos)
-
-### Progreso
+Progreso:
 (en el número siguiente pon una descripción que se ajuste a lo que hiciste)
-
-## Tarea (este es un ejemplo, actualiza arriba, aquí no)
-
-Agregar estadísticas de actividad semanal y notificaciones en el canal.
-finalizas creando una nueva tarea con la instrucción "sigue las instruccioones de readme.md"
+-Tarea: Instrucciones para desarrollar en siguente paso lógico para el desarrollo de un sistema como este 
