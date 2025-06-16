@@ -20,9 +20,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 6. Misiones diarias asignadas automáticamente a todos los usuarios
 7. Misiones personalizadas creadas por administradores desde el bot
 8. Sistema de ranking de usuarios con comando /ranking
+9. Sistema de logros y medallas para usuarios
 
 ##  Tarea
-Permitir a los administradores crear misiones personalizadas desde el bot, definiendo descripción, puntos y duración
+Implementar tienda para canjear puntos por recompensas
 
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
@@ -35,5 +36,5 @@ Una vez terminaba tu tarea y verificado que funciona y que responde  como deber�
 (en el número siguiente pon una descripción que se ajuste a lo que hiciste)
 
 ## Tarea
-Agregar sistema de logros y medallas para usuarios
+Agregar retos semanales para usuarios
 

@@ -19,6 +19,8 @@ from .database import (
     mark_warning_sent,
     assign_daily_missions,
     get_top_users,
+    award_achievement,
+    get_user_achievements,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -147,6 +149,35 @@ async def ranking_command(message: Message):
         f"{idx + 1}. {u.id} - {u.points} pts" for idx, u in enumerate(users)
     ]
     await message.answer("Ranking:\n" + "\n".join(lines))
+
+
+@dp.message(Command("award"))
+async def award_command(message: Message):
+    """Allow admins to award an achievement to a user."""
+    if message.from_user.id not in settings.admin_ids:
+        await message.answer("No autorizado")
+        return
+    try:
+        data = message.text.split(maxsplit=1)[1]
+        user_str, name, desc = [part.strip() for part in data.split("|", 2)]
+        user_id = int(user_str)
+    except Exception:
+        await message.answer("Uso: /award user_id|nombre|descripcion")
+        return
+    award_achievement(user_id, name, desc)
+    await message.answer("Logro otorgado")
+
+
+@dp.message(Command("achievements"))
+async def achievements_command(message: Message):
+    """Show the achievements of a user."""
+    user_id = message.from_user.id
+    achievements = get_user_achievements(user_id)
+    if not achievements:
+        await message.answer("A\u00fan no tienes logros")
+        return
+    lines = [f"{a.name}: {a.description}" for a in achievements]
+    await message.answer("Tus logros:\n" + "\n".join(lines))
 
 
 async def scheduler():
