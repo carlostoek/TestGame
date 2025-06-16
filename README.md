@@ -15,9 +15,10 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 1. Instalé y generé la estructura básica del bot
 2. Diseño básico de la base de datos
 3. Implementada lógica inicial de misiones y recompensas
+4. Añadido soporte para misiones con objetivos y recompensas dinámicas
 
-##  Tarea 
-Agregar más tipos de misiones y recompensas dinámicas
+##  Tarea
+Implementar un sistema de notificaciones para avisar a los usuarios cuando una misión esté por expirar
 
 (Definir nuevas reglas para misiones y cómo se calculan las recompensas)
 
