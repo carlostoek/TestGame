@@ -7,7 +7,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
 from aiogram.types import Message
 
@@ -290,7 +290,7 @@ async def purchases_command(message: Message):
     await message.answer("Tus compras:\n" + "\n".join(lines))
 
 
-@dp.message(~Command())
+@dp.message(~F.text.startswith("/"))
 async def track_messages(message: Message):
     """Track user activity on every message."""
     if message.from_user and message.chat.type in {"private", "group", "supergroup"}:
