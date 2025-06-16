@@ -17,34 +17,19 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 3. Implementada lógica inicial de misiones y recompensas
 
 ##  Tarea 
-Implementar la lógica de misiones y recompensas:
-
-Asignación de misiones
-Crear una función (por ejemplo assign_mission) que registre en la tabla Mission una misión inicial para cada usuario.
-Gestionar campos como description, points y expires_at (misiones que caducan).
-
-Validación de cumplimiento de misiones
-Añadir un comando o handler que verifique si la misión de un usuario se completó (según la lógica que necesites: mensajes enviados, tiempo transcurrido, etc.) y otorgar los puntos correspondientes.
-Al completar una misión, actualizar user.points y aumentar user.level si se superan ciertos umbrales.
-
-Reporte de progreso
-Implementar un comando /missions o /progress para que un usuario pueda ver sus misiones activas, puntos acumulados y nivel actual.
-
-Persistencia y limpieza
-Programar la eliminación o expiración automática de misiones pasadas su fecha de caducidad.
-Si fuera necesario, crear tareas periódicas (con asyncio o un scheduler) para revisar misiones pendientes y expiradas.
-
-Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
--Actualizar el nombre de la tarea (en Codex) con algo que describa este paso (en caso de ser necesario)
--Actualiza este documento (README.md) de la siguiente forma
-
-### Estructura
-Sin cambios en la estructura de archivos
-
-### Progreso
-3. Implementada lógica inicial de misiones y recompensas
-
-## Tarea
 Agregar más tipos de misiones y recompensas dinámicas
 
 (Definir nuevas reglas para misiones y cómo se calculan las recompensas)
+
+Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
+-Actualizar el nombre de la tarea (en Codex) con algo que describa este paso (en caso de ser necesario)
+-Actualiza este documento (README.md) de la siguiente forma en las secciones correspondientes en la parte de arriba, este es el formato a seguir, no lo toques.
+
+### Estructura
+(actualiza la estructura del proyecto en caso de que hayas creado archivos)
+
+### Progreso
+(en el número siguiente pon una descripción que se ajuste a lo que hiciste)
+
+## Tarea
+(describe el siguiente paso lógico para el desarrollo de un sistema como este, da detalles de ser necesario seguir con algún archivo en específico algún campo o alguna tabla)
