@@ -183,6 +183,13 @@ def get_all_users() -> List[User]:
         return session.exec(statement).all()
 
 
+def get_top_users(limit: int = 10) -> List[User]:
+    """Return users ordered by points descending."""
+    with get_session() as session:
+        statement = select(User).order_by(User.points.desc()).limit(limit)
+        return session.exec(statement).all()
+
+
 def assign_daily_missions(
     description: str,
     points: int,
