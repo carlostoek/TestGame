@@ -26,6 +26,7 @@ from .database import (
     get_rewards,
     redeem_reward,
     add_reward,
+    get_weekly_mission,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -86,6 +87,21 @@ async def missions_list(message: Message):
     ]
     await message.answer(
         "\n".join(text_lines) + f"\nPuntos: {user.points} Nivel: {user.level}"
+    )
+
+
+@dp.message(Command("weekly"))
+async def weekly_mission(message: Message):
+    """Show the current weekly mission for the user."""
+    user_id = message.from_user.id
+    mission = get_weekly_mission(user_id)
+    if not mission:
+        await message.answer("No tienes un reto semanal asignado actualmente")
+        return
+    reward = calculate_reward(mission)
+    await message.answer(
+        f"Reto semanal: {mission.description}\n"
+        f"Progreso: {mission.progress}/{mission.goal} (+{reward} pts)"
     )
 
 
