@@ -14,6 +14,7 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 ## Progreso
 1. Instalé y generé la estructura básica del bot
 2. Diseño básico de la base de datos
+3. Implementada lógica inicial de misiones y recompensas
 
 ##  Tarea 
 Implementar la lógica de misiones y recompensas:
@@ -37,13 +38,13 @@ Una vez terminaba tu tarea y verificado que funciona y que responde  como deber�
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso (en caso de ser necesario)
 -Actualiza este documento (README.md) de la siguiente forma
 
-Estructuraa (en caso de que hayas creado nuevos archivos9
+### Estructura
+Sin cambios en la estructura de archivos
 
-Progreso 
-En el número siguente Coloca algo que describa lo que hiciste 
+### Progreso
+3. Implementada lógica inicial de misiones y recompensas
 
-##Tarea
-(Descripción general del siguente paso lógico)
+## Tarea
+Agregar más tipos de misiones y recompensas dinámicas
 
-
-(Istrucciones precisas para desarrollar el siguiente piso lógico)
+(Definir nuevas reglas para misiones y cómo se calculan las recompensas)

@@ -3,8 +3,17 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import Message
 
+from typing import Optional
+
 from .config import settings
-from .database import get_or_create_user, reset_missions
+from .database import (
+    get_or_create_user,
+    reset_missions,
+    assign_mission,
+    get_active_missions,
+    complete_mission,
+    remove_expired_missions,
+)
 
 bot = Bot(token=settings.bot_token)
 dp = Dispatcher()
@@ -12,6 +21,8 @@ dp = Dispatcher()
 @dp.message(Command("start"))
 async def start_handler(message: Message):
     user = get_or_create_user(message.from_user.id)
+    if not get_active_missions(user.id):
+        assign_mission(user.id, "Env\u00eda un mensaje en el canal", 10, days_valid=1)
     await message.answer(f"Bienvenido al bot! Nivel actual: {user.level}")
 
 @dp.message(Command("user"))
@@ -36,7 +47,40 @@ async def reset_user(message: Message):
     reset_missions(target_id)
     await message.answer(f"Misiones de {target_id} reiniciadas")
 
+
+@dp.message(Command("missions"))
+async def missions_list(message: Message):
+    user = get_or_create_user(message.from_user.id)
+    missions = get_active_missions(user.id)
+    if not missions:
+        await message.answer("No tienes misiones activas")
+        return
+    text_lines = [f"ID {m.id}: {m.description} (+{m.points} puntos)" for m in missions]
+    await message.answer("\n".join(text_lines) + f"\nPuntos: {user.points} Nivel: {user.level}")
+
+
+@dp.message(Command("complete"))
+async def complete_command(message: Message):
+    try:
+        mission_id = int(message.text.split(maxsplit=1)[1])
+    except (IndexError, ValueError):
+        await message.answer("Uso: /complete <id_mision>")
+        return
+    mission = complete_mission(message.from_user.id, mission_id)
+    if not mission:
+        await message.answer("Misi\u00f3n no v\u00e1lida")
+        return
+    await message.answer(f"Misi\u00f3n completada! Ganaste {mission.points} puntos")
+
+
+async def scheduler():
+    """Background task to clean expired missions."""
+    while True:
+        remove_expired_missions()
+        await asyncio.sleep(3600)
+
 async def main():
+    asyncio.create_task(scheduler())
     await dp.start_polling(bot)
 
 if __name__ == "__main__":

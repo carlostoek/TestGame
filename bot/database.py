@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field, create_engine, Session, select
-from typing import Optional
-from datetime import datetime
+from typing import Optional, List
+from datetime import datetime, timedelta
 
 engine = create_engine('sqlite:///database.db')
 
@@ -37,6 +37,55 @@ def get_or_create_user(user_id: int) -> User:
 def reset_missions(user_id: int):
     with get_session() as session:
         statement = select(Mission).where(Mission.user_id == user_id)
+        missions = session.exec(statement).all()
+        for m in missions:
+            session.delete(m)
+        session.commit()
+
+
+def assign_mission(user_id: int, description: str, points: int, days_valid: int | None = None) -> Mission:
+    """Create a mission for a user."""
+    expires_at = None
+    if days_valid is not None:
+        expires_at = datetime.utcnow() + timedelta(days=days_valid)
+    mission = Mission(user_id=user_id, description=description, points=points, expires_at=expires_at)
+    with get_session() as session:
+        session.add(mission)
+        session.commit()
+        session.refresh(mission)
+    return mission
+
+
+def get_active_missions(user_id: int) -> List[Mission]:
+    """Return missions that are not expired."""
+    now = datetime.utcnow()
+    with get_session() as session:
+        statement = select(Mission).where(Mission.user_id == user_id)
+        missions = session.exec(statement).all()
+        return [m for m in missions if m.expires_at is None or m.expires_at > now]
+
+
+def complete_mission(user_id: int, mission_id: int) -> Optional[Mission]:
+    """Mark mission as completed and award points."""
+    with get_session() as session:
+        mission = session.get(Mission, mission_id)
+        user = session.get(User, user_id)
+        if not mission or not user or mission.user_id != user_id:
+            return None
+        user.points += mission.points
+        user.level = user.points // 100 + 1
+        session.delete(mission)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+        return mission
+
+
+def remove_expired_missions() -> None:
+    """Delete missions past their expiry date."""
+    now = datetime.utcnow()
+    with get_session() as session:
+        statement = select(Mission).where(Mission.expires_at != None, Mission.expires_at < now)
         missions = session.exec(statement).all()
         for m in missions:
             session.delete(m)
