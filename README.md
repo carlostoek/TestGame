@@ -22,6 +22,7 @@ Este proyecto contiene un bot de Telegram basado en Aiogram 3 que servirá Como 
 8. Sistema de ranking de usuarios con comando /ranking
 9. Sistema de logros y medallas para usuarios
 10. Tienda para canjear puntos por recompensas
+11. Retos semanales automáticos para usuarios
 
 ##  Tarea
 Agregar retos semanales para usuarios
@@ -38,5 +39,5 @@ Una vez terminaba tu tarea y verificado que funciona y que responde  como deber�
 
 ## Tarea (este es un ejemplo, actualiza arriba, aquí no)
 
-(Agrega una descripción del próximo paso lógico en este tipo de proyectos) 
+Agregar estadísticas de actividad semanal y notificaciones en el canal.
 finalizas creando una nueva tarea con la instrucción "sigue las instruccioones de readme.md"

@@ -239,6 +239,40 @@ def assign_daily_missions(
         session.commit()
 
 
+def assign_weekly_missions(
+    description: str,
+    points: int,
+    goal: int = 1,
+) -> None:
+    """Assign a weekly mission to all users if they don't have it for this week."""
+    today = datetime.utcnow().date()
+    # Calculate Monday of the current week
+    monday = today - timedelta(days=today.weekday())
+    start = datetime.combine(monday, datetime.min.time())
+    end = start + timedelta(days=7)
+    with get_session() as session:
+        users = session.exec(select(User)).all()
+        for user in users:
+            statement = select(Mission).where(
+                Mission.user_id == user.id,
+                Mission.type == "weekly",
+                Mission.created_at >= start,
+                Mission.created_at < end,
+            )
+            exists = session.exec(statement).first()
+            if not exists:
+                mission = Mission(
+                    user_id=user.id,
+                    description=description,
+                    points=points,
+                    type="weekly",
+                    goal=goal,
+                    expires_at=end,
+                )
+                session.add(mission)
+        session.commit()
+
+
 def award_achievement(user_id: int, name: str, description: str) -> Achievement:
     """Grant an achievement and update user badges."""
     achievement = Achievement(

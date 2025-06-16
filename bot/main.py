@@ -4,6 +4,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from typing import Optional
+from datetime import datetime, timedelta
 
 from .config import settings
 from .database import (
@@ -18,6 +19,7 @@ from .database import (
     get_missions_near_expiry,
     mark_warning_sent,
     assign_daily_missions,
+    assign_weekly_missions,
     get_top_users,
     award_achievement,
     get_user_achievements,
@@ -236,9 +238,25 @@ async def daily_mission_scheduler():
         await asyncio.sleep(3600)
 
 
+async def weekly_mission_scheduler():
+    """Assign weekly missions to all users once per week."""
+    last_week = datetime.utcnow().date() - timedelta(days=datetime.utcnow().weekday())
+    while True:
+        current_week = datetime.utcnow().date() - timedelta(days=datetime.utcnow().weekday())
+        if current_week != last_week:
+            assign_weekly_missions(
+                "Reto semanal: participa con 10 mensajes",
+                points=20,
+                goal=10,
+            )
+            last_week = current_week
+        await asyncio.sleep(3600)
+
+
 async def main():
     asyncio.create_task(scheduler())
     asyncio.create_task(daily_mission_scheduler())
+    asyncio.create_task(weekly_mission_scheduler())
     await dp.start_polling(bot)
 
 
