@@ -18,6 +18,7 @@ from .database import (
     get_missions_near_expiry,
     mark_warning_sent,
     assign_daily_missions,
+    get_top_users,
 )
 
 bot = Bot(token=settings.bot_token)
@@ -133,6 +134,19 @@ async def create_mission(message: Message):
         return
     assign_mission(user_id, desc, points, days_valid=days)
     await message.answer("Misi\u00f3n creada")
+
+
+@dp.message(Command("ranking"))
+async def ranking_command(message: Message):
+    """Show top users by points."""
+    users = get_top_users(10)
+    if not users:
+        await message.answer("No hay usuarios registrados")
+        return
+    lines = [
+        f"{idx + 1}. {u.id} - {u.points} pts" for idx, u in enumerate(users)
+    ]
+    await message.answer("Ranking:\n" + "\n".join(lines))
 
 
 async def scheduler():
