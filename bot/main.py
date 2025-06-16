@@ -30,18 +30,15 @@ from bot.database import (
     assign_daily_missions,
     assign_weekly_missions,
     get_top_users,
-    award_achievement,
     get_user_achievements,
     get_rewards,
     redeem_reward,
     get_user_purchases,
-    add_reward,
     get_weekly_mission,
     record_user_message,
     get_weekly_activity,
     get_user_weekly_stat,
     reward_top_weekly_users,
-    get_monthly_purchase_summary,
 )
 from bot.admin import router as admin_router
 
@@ -155,25 +152,6 @@ async def complete_command(message: Message):
     await message.answer(f"Misi\u00f3n completada! Ganaste {reward} puntos")
 
 
-@dp.message(Command("createmission"))
-async def create_mission(message: Message):
-    """Allow admins to create custom missions for a user."""
-    if message.from_user.id not in settings.admin_ids:
-        await message.answer("No autorizado")
-        return
-    try:
-        data = message.text.split(maxsplit=1)[1]
-        user_id_str, desc, points_str, days_str = [
-            part.strip() for part in data.split("|")
-        ]
-        user_id = int(user_id_str)
-        points = int(points_str)
-        days = int(days_str)
-    except Exception:
-        await message.answer("Uso: /createmission user_id|descripcion|puntos|dias")
-        return
-    assign_mission(user_id, desc, points, days_valid=days)
-    await message.answer("Misi\u00f3n creada")
 
 
 @dp.message(Command("ranking"))
@@ -187,21 +165,6 @@ async def ranking_command(message: Message):
     await message.answer("Ranking:\n" + "\n".join(lines))
 
 
-@dp.message(Command("award"))
-async def award_command(message: Message):
-    """Allow admins to award an achievement to a user."""
-    if message.from_user.id not in settings.admin_ids:
-        await message.answer("No autorizado")
-        return
-    try:
-        data = message.text.split(maxsplit=1)[1]
-        user_str, name, desc = [part.strip() for part in data.split("|", 2)]
-        user_id = int(user_str)
-    except Exception:
-        await message.answer("Uso: /award user_id|nombre|descripcion")
-        return
-    award_achievement(user_id, name, desc)
-    await message.answer("Logro otorgado")
 
 
 @dp.message(Command("achievements"))
@@ -241,21 +204,6 @@ async def store_command(message: Message):
     await message.answer("Tienda:\n" + "\n".join(lines))
 
 
-@dp.message(Command("addreward"))
-async def add_reward_command(message: Message):
-    """Add a new reward to the store (admin only)."""
-    if message.from_user.id not in settings.admin_ids:
-        await message.answer("No autorizado")
-        return
-    try:
-        data = message.text.split(maxsplit=1)[1]
-        name, desc, cost_str = [part.strip() for part in data.split("|", 2)]
-        cost = int(cost_str)
-    except Exception:
-        await message.answer("Uso: /addreward nombre|descripcion|costo")
-        return
-    add_reward(name, desc, cost)
-    await message.answer("Recompensa agregada")
 
 
 @dp.message(Command("buy"))
@@ -312,35 +260,6 @@ async def purchases_command(message: Message):
     await message.answer(prefix + " compras:\n" + "\n".join(lines))
 
 
-@dp.message(Command("monthsummary"))
-async def monthly_purchases_command(message: Message):
-    """Show purchase summary for a given month (admin only)."""
-    if message.from_user.id not in settings.admin_ids:
-        await message.answer("No autorizado")
-        return
-
-    parts = message.text.split(maxsplit=1)
-    if len(parts) > 1:
-        try:
-            month = datetime.strptime(parts[1], "%Y-%m").date().replace(day=1)
-        except ValueError:
-            await message.answer("Uso: /monthsummary [YYYY-MM]")
-            return
-    else:
-        first_day_current = datetime.utcnow().date().replace(day=1)
-        month = (first_day_current - timedelta(days=1)).replace(day=1)
-
-    summary = get_monthly_purchase_summary(month)
-    if not summary:
-        await message.answer("Sin compras registradas")
-        return
-
-    lines = [
-        f"{reward.name if reward else rid}: {count}" for reward, count in summary
-    ]
-    await message.answer(
-        f"Resumen de compras {month:%Y-%m}:\n" + "\n".join(lines)
-    )
 
 
 @dp.message(~F.text.startswith("/"))
