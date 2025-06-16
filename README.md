@@ -34,8 +34,4 @@ Implementar recompensas automáticas para los usuarios con mayor actividad seman
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
 -Actualiza este documento (README.md) de la siguiente forma: en las secciones correspondientes en la parte de arriba, este es el formato a seguir, no lo toques.
-Estructura:
-(actualiza la estructura del proyecto en caso de que hayas creado archivos)
-Progreso:
-(en el número siguiente pon una descripción que se ajuste a lo que hiciste)
--Tarea: Implementar clasificación mensual de usuarios con recompensas automáticas
+Estructura, progreso y el siguente paso lógico definido en"tarea"
