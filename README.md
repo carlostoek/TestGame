@@ -41,4 +41,4 @@ agregar pruebas unitarias para los comandos de administración
 Una vez terminaba tu tarea y verificado que funciona y que responde  como debería   procede a:
 -Actualizar el nombre de la tarea (en Codex) con algo que describa este paso
 -Actualiza este documento (README.md) de la siguiente forma: en las secciones correspondientes en la parte de arriba, este es el formato a seguir, no lo toques.
-Estructura, progreso y el siguente paso lógico definido en"tarea"
+Estructura, progreso... piensa en el proyecto como una pirámide en donde lo que está desarrollado ahora.es la base secuencial de la estructura piensa en el siguiente paso horizontal lógico y si crees que ha llegado a su límite piensa en el siguiente  vertical ascendente, ese paso  al que llegues, dimensionalo con un paso más hacia adelante de él y hacia los lados y haz ese conjunto de pasos en formato de pro arriba en la tarea
